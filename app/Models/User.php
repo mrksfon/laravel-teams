@@ -7,6 +7,7 @@ use App\Observers\UserObserver;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -21,11 +22,7 @@ class User extends Authenticatable
      *
      * @var list<string>
      */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-    ];
+    protected $guarded = false;
 
     /**
      * The attributes that should be hidden for serialization.
@@ -53,7 +50,8 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Team::class);
     }
-
-//    test
-
+    public function currentTeam():BelongsTo
+    {
+        return $this->belongsTo(Team::class,'current_team_id');
+    }
 }
