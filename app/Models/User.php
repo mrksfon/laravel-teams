@@ -10,12 +10,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Spatie\Permission\Traits\HasRoles;
 
 #[ObservedBy(UserObserver::class)]
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -46,12 +47,14 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
     public function teams()
     {
         return $this->belongsToMany(Team::class);
     }
-    public function currentTeam():BelongsTo
+
+    public function currentTeam(): BelongsTo
     {
-        return $this->belongsTo(Team::class,'current_team_id');
+        return $this->belongsTo(Team::class, 'current_team_id');
     }
 }
