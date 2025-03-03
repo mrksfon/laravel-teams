@@ -14,7 +14,12 @@ class UserObserver
         );
 
         $user->currentTeam()->associate($team);
+
         $user->save();
+
+        setPermissionsTeamId($team->id);
+
+        $user->assignRole('team admin');
     }
 
     public function deleting(User $user)
