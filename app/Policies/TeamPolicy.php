@@ -7,12 +7,12 @@ use App\Models\User;
 
 class TeamPolicy
 {
-    public function setCurrent(User $user, Team $team)
+    public function setCurrent(User $user, Team $team): bool
     {
         return $user->teams->contains($team);
     }
 
-    public function update(User $user, Team $team)
+    public function update(User $user, Team $team): bool
     {
         if (!$user->teams->contains($team)) {
             return false;
@@ -21,12 +21,20 @@ class TeamPolicy
         return $user->can('update team');
     }
 
-    public function leave(User $user, Team $team)
+    public function leave(User $user, Team $team): bool
     {
         if (!$user->teams->contains($team)) {
             return false;
         }
 
         return $user->teams->count() >= 2;
+    }
+
+    public function removeTeamMember(User $user, Team $team, User $member): bool
+    {
+        if ($team->members->doesntContain($member)) {
+            return false;
+        }
+        return $user->can('remove team members', $team);
     }
 }

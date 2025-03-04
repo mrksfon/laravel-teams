@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TeamController;
+use App\Http\Controllers\TeamMemberController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -20,6 +21,10 @@ Route::middleware('auth')->group(function () {
     Route::patch('/team/{team}', [TeamController::class, 'update'])->name('team.update');
 
     Route::post('/team/{team}/leave', [TeamController::class, 'leave'])->name('team.leave');
+
+    Route::delete('/team/{team}/members/{user}',
+        [TeamMemberController::class, 'destroy'])->name('team.members.destroy');
+
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
