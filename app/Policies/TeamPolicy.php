@@ -17,6 +17,7 @@ class TeamPolicy
         if (!$user->teams->contains($team)) {
             return false;
         }
-        return true;
+
+        return $user->can('update team');
     }
 }
