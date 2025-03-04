@@ -15,5 +15,7 @@ class MemberRoleSeeder extends Seeder
     public function run(): void
     {
         $role = Role::firstOrCreate(['name' => 'team member']);
+
+        $role->givePermissionTo(Permission::firstOrCreate(['name' => 'view team members']));
     }
 }

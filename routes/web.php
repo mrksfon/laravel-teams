@@ -15,7 +15,7 @@ Route::get('/dashboard', function () {
 Route::middleware('auth')->group(function () {
     Route::patch('/teams/{team}/set_current', [TeamController::class, 'setCurrent'])->name('team.set-current');
 
-    Route::get('/teams', [TeamController::class, 'edit'])->name('team.edit');
+    Route::get('/team', [TeamController::class, 'edit'])->name('team.edit');
 
     Route::patch('/team/{team}', [TeamController::class, 'update'])->name('team.update');
 
