@@ -74,3 +74,38 @@ it('can not update a team without permission', function () {
         ])
         ->assertForbidden();
 });
+
+it('can leave a team', function () {
+    $user = User::factory()
+        ->has(Team::factory())
+        ->create();
+
+    $teamToLeave = $user->currentTeam;
+
+    actingAs($user)
+        ->post(route('team.leave', $teamToLeave))
+        ->assertRedirect(route('dashboard'));
+
+    expect($user->fresh()->teams->contains($teamToLeave->id))->toBeFalse()
+        ->and($user->fresh()->currentTeam->id)->not->toEqual($teamToLeave->id);
+});
+
+it('can not leave a team if we have on team remaining', function () {
+    $user = User::factory()->create();
+
+    actingAs($user)
+        ->post(route('team.leave', $user->currentTeam))
+        ->assertForbidden();
+});
+
+it('can not leave a team that we don\'t belong to', function () {
+    $user = User::factory()->create();
+
+    $anotherUser = User::factory()->create();
+
+    actingAs($user)
+        ->post(route('team.leave', $anotherUser->currentTeam))
+        ->assertForbidden();
+});
+
+
