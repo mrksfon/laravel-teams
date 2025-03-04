@@ -48,6 +48,12 @@ class User extends Authenticatable
         ];
     }
 
+    public function profilePhotoUrl()
+    {
+        return 'https://gravatar.com/avatar/'.md5($this->email).'?s=100';
+    }
+
+
     public function teams()
     {
         return $this->belongsToMany(Team::class);
