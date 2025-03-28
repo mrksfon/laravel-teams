@@ -2,8 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Models\TeamInvite;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class TeamInviteStoreRequest extends FormRequest
 {
@@ -23,7 +25,11 @@ class TeamInviteStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => 'required|max:255'
+            'email' => [
+                'required',
+                'max:255',
+                Rule::unique(TeamInvite::class, 'email')->where('team_id', $this->team->id)
+            ]
         ];
     }
 }

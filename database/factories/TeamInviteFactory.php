@@ -2,10 +2,11 @@
 
 namespace Database\Factories;
 
+use App\Models\TeamInvite;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\TeamInvite>
+ * @extends Factory<TeamInvite>
  */
 class TeamInviteFactory extends Factory
 {
@@ -17,7 +18,7 @@ class TeamInviteFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'token' => str()->random(30)
         ];
     }
 }

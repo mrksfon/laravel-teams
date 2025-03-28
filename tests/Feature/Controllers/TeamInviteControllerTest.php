@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Team;
+use App\Models\TeamInvite;
 use App\Models\User;
 
 use function Pest\Laravel\actingAs;
@@ -35,3 +37,36 @@ it('requires an email adress', function () {
         ->post(route('team.invites.store', $user->currentTeam))
         ->assertSessionHasErrors(['email']);
 });
+
+it('fails to create invite if email already used', function () {
+    $user = User::factory()->create();
+
+    TeamInvite::factory()->create([
+        'team_id' => $user->currentTeam->id,
+        'email' => $email = 'test@example.com',
+    ]);
+
+    actingAs($user)
+        ->post(route('team.invites.store', $user->currentTeam), [
+            'email' => $email = 'test@example.com',
+        ])
+        ->assertInvalid();
+});
+
+it('creates invite if email already invited to another team', function () {
+    $user = User::factory()->create();
+
+    TeamInvite::factory()
+        ->for(Team::factory())
+        ->create([
+            'email' => $email = 'test@example.com',
+        ]);
+
+    actingAs($user)
+        ->post(route('team.invites.store', $user->currentTeam), [
+            'email' => $email
+        ])
+        ->assertValid();
+});
+
+
