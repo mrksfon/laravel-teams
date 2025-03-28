@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
@@ -21,5 +20,7 @@ class AdminRoleSeeder extends Seeder
         $role->givePermissionTo(Permission::firstOrCreate(['name' => 'view team members']));
 
         $role->givePermissionTo(Permission::firstOrCreate(['name' => 'remove team members']));
+
+        $role->givePermissionTo(Permission::firstOrCreate(['name' => 'invite to team']));
     }
 }
