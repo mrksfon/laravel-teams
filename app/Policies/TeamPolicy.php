@@ -41,4 +41,12 @@ class TeamPolicy
         }
         return $user->can('remove team members', $team);
     }
+
+    public function inviteToTeam(User $user, Team $team)
+    {
+        if ($user->teams->doesntContain($team)) {
+            return false;
+        }
+        return $user->can('invite to team');
+    }
 }
