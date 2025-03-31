@@ -15,6 +15,13 @@
                 <x-team-member-item :member="$member" :team="$team"/>
             @endforeach
         </ul>
+        @can('invite to team')
+            <ul class="divide-y divide-gray-100">
+                @foreach($team->invites as $invite)
+                    <x-team-invite-item :invite="$invite"/>
+                @endforeach
+            </ul>
+        @endcan
     </div>
 
     @can('invite to team')
